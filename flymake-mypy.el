@@ -2,7 +2,7 @@
 
 ;; Author: jason <jason@zzq.org>
 ;; Created: 26 Sep 2022
-;; Version: 0.2.0
+;; Version: 0.3.1
 
 ;;; Commentary:
 
@@ -13,6 +13,9 @@
 ;;   (add-hook 'python-mode-hook #'flymake-mypy-enable)
 
 ;; Changes:
+;;   0.3.1
+;;     - fixes issue with (project-current)'s shape changing which prevents
+;;       flymake-mypy from starting
 ;;   0.3.0
 ;;     - uses mypy's --show-error-end for building more accurate error ranges
 ;;       (Requires mypy >= 0.981)
@@ -62,7 +65,7 @@
     (save-restriction
       (widen)
       (let* ((temp-file (concat (make-temp-file "flymake-mypy") ".py"))
-             (default-directory (cdr (project-current))))
+             (default-directory (car (last (project-current)))))
 	(write-region (point-min) (point-max) temp-file nil 'quiet)
 
 	(setq flymake-mypy--proc
