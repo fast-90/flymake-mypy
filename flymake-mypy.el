@@ -64,7 +64,8 @@
   (let ((source-buffer (current-buffer)))
     (save-restriction
       (widen)
-      (let* ((temp-file (concat (make-temp-file "flymake-mypy") ".py"))
+      (let* ((current-file-name (file-name-base buffer-file-name))
+             (temp-file (concat (make-temp-file (concat current-file-name "-flymake-mypy")) ".py"))
              (default-directory (car (last (project-current)))))
 	(write-region (point-min) (point-max) temp-file nil 'quiet)
 
